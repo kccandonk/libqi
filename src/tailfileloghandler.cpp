@@ -99,13 +99,7 @@ namespace log
       boost::filesystem::path filePath(_p->_fileName);
       boost::filesystem::path oldFilePath(_p->_fileName + ".old");
 
-      QI_ASSERT_TRUE(boost::filesystem::is_regular_file(filePath));
-      QI_ASSERT_TRUE(!boost::filesystem::exists(oldFilePath) || boost::filesystem::is_regular_file(oldFilePath));
-      const auto copySuccess =
-        boost::filesystem::copy_file(filePath, oldFilePath,
-                                     boost::filesystem::copy_options::overwrite_existing);
-      QI_IGNORE_UNUSED(copySuccess);
-      QI_ASSERT_TRUE(copySuccess);
+      boost::filesystem::copy_file(filePath, oldFilePath, boost::filesystem::copy_option::overwrite_if_exists);
 
       FILE* pfile = qi::os::fopen(filePath.make_preferred().string().c_str(), "w+");
 

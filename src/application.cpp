@@ -107,12 +107,12 @@ namespace qi {
       count_term++;
       sigcount = count_term;
     }
-    namespace ph = std::placeholders;
+    
     switch (sigcount) {
       case 1:
         qiLogVerbose() << "Sending the stop command...";
         //register the signal again to call exit the next time if stop did not succeed
-        Application::atSignal(boost::bind<void>(&stop_handler, ph::_1), signal_number);
+        Application::atSignal(boost::bind<void>(&stop_handler, _1), signal_number);
         // Stop might immediately trigger application destruction, so it has
         // to go after atSignal.
         Application::stop();
@@ -313,7 +313,6 @@ namespace qi {
   {
     QI_ASSERT_TRUE(globalIoService);
 
-    namespace ph = std::placeholders;
 
     // We use a list because signal_set is not moveable.
     std::list<boost::asio::signal_set> signalSets;
@@ -323,12 +322,12 @@ namespace qi {
     // run is called, so we catch sigint/sigterm, the default
     // implementation call Application::stop that
     // will make this loop exit.
-    atSignal.emplace_back(boost::bind(stop_handler, ph::_1), SIGTERM);
-    atSignal.emplace_back(boost::bind(stop_handler, ph::_1), SIGINT);
+    atSignal.emplace_back(boost::bind(stop_handler, _1), SIGTERM);
+    atSignal.emplace_back(boost::bind(stop_handler, _1), SIGINT);
 
     for(const auto& func: atSignal)
       signalSets.emplace(signalSets.end(), *globalIoService, func.second)->async_wait(
-                  boost::bind(signal_handler, ph::_1, ph::_2, std::move(func.first)));
+                  boost::bind(signal_handler, _1, _2, std::move(func.first)));
 
     // Call every function registered as "atRun"
     for(auto& function: lazyGet(globalAtRun))
