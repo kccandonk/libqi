@@ -18,6 +18,7 @@
 #include <unordered_map>
 #include <map>
 #include <sstream>
+#include <boost/optional/optional_io.hpp>
 
 namespace {
   // No-conversion test types.
