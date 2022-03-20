@@ -10,6 +10,7 @@
 #include <ka/functor.hpp>
 #include <ka/flatten.hpp>
 #include <ka/testutils.hpp>
+#include <boost/optional/optional_io.hpp>
 
 TEST(Optional, Regular) {
   using namespace ka;
