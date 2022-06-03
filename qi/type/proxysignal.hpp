@@ -174,13 +174,13 @@ namespace qi
       signal.setOnSubscribers(lifeSignal(
         boost::bind(resetBounceEventCallbackOnSubscribersContinuous(signal, lifeSignal, callSubs,
                                                                     object, signalName),
-                    SignalBase::invalidSignalLink, std::placeholders::_1)));
+                    SignalBase::invalidSignalLink, _1)));
 
       // On signal trigger, just forward the trigger to the back-end. When the back-end gets
       // triggered, we get notified back, because we connect to the back-end by the 'bounce event'
       // callback, in which we can notify back our local subscribers.
       signal.setTriggerOverride(
-        boost::bind(&details_proxysignal::metaPostSignal, object, signalName, std::placeholders::_1));
+        boost::bind(&details_proxysignal::metaPostSignal, object, signalName, _1));
     }
 
     inline void tearDownProxy(SignalBase& sig)
